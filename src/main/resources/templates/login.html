@@ -1,12 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Log in</title>
+    <title>Login Page</title>
 </head>
 <body>
 
-login
 
+<h1>Login</h1>
+<form action="/login" method="post">
+    <label>
+        <input type="text" name="email" placeholder="Email"/>
+    </label>
+    <label>
+        <input type="password" name="password" placeholder="Password">
+    </label>
+    <button type="submit">Login</button>
+</form>
+<br>
+<div >
+    <a href="/oauth2/authorization/github">Login with GitHub</a><br>
+    <a href="/oauth2/authorization/google">Login with Google</a>
+</div>
 </body>
 </html>

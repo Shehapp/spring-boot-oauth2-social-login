@@ -22,9 +22,13 @@ spring:
       client:
         registration:
           github:
-            client_id:
-            client_secret:
+            clientId: Iv1.a1f5a593c4c5bd8a
+            clientSecret: 0e56a3b4456a9b28502056f856442c5f22233aef
           google:
-            client_id:
-            client_secret:
+            client_id: 813246067644-edfqvtihc4e9fl6db0b1112qr68eml77.apps.googleusercontent.com
+            client_secret: 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
+
+    jwt:
+      secret: 04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1
+      expiration: 20000  # 20 seconds
 

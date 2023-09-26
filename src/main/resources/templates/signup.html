@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>sign up Page</title>
+</head>
+<body>
+<h1>Sign up</h1>
+<form action="/register" method="post">
+  <label>
+    <input type="text" name="username" placeholder="Username">
+  </label>
+  <label>
+    <input type="text" name="email" placeholder="Email">
+  </label>
+  <label>
+    <input type="password" name="password" placeholder="Password">
+  </label>
+  <button type="submit">sign up</button>
+</form>
+<br>
+<div >
+  <a href="/oauth2/authorization/github">sign up with GitHub</a><br>
+  <a href="/oauth2/authorization/google">sign up with Google</a>
+</div>
+</body>
+</html>
