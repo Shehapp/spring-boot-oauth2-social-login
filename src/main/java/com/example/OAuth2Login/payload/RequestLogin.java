@@ -1,4 +1,4 @@
-package com.example.OAuth2Login.dto;
+package com.example.OAuth2Login.payload;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

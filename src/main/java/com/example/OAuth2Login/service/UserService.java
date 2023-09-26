@@ -1,8 +1,10 @@
 package com.example.OAuth2Login.service;
 
 import com.example.OAuth2Login.config.jwt.JwtService;
-import com.example.OAuth2Login.dto.RequestLogin;
-import com.example.OAuth2Login.dto.RequestRegister;
+import com.example.OAuth2Login.entity.GlobalUser;
+import com.example.OAuth2Login.payload.AuthResponse;
+import com.example.OAuth2Login.payload.RequestLogin;
+import com.example.OAuth2Login.payload.RequestRegister;
 import com.example.OAuth2Login.entity.AuthProvider;
 import com.example.OAuth2Login.entity.Role;
 import com.example.OAuth2Login.entity.User;
@@ -25,26 +27,32 @@ public class UserService {
     private final JwtService jwtService;
 
 
-    public String authenticate(RequestLogin requestLogin) {
+    public AuthResponse authenticate(RequestLogin requestLogin) {
         System.out.println(requestLogin);
         Authentication authentication;
-            authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            requestLogin.getEmail(),
-                            requestLogin.getPassword()
-                    )
-            );
-
-        return jwtService.generateToken(
-                org.springframework.security.core.userdetails.User
-                .withUsername(requestLogin.getEmail())
-                .password("")
-                .authorities(authentication.getAuthorities())
-                .build()
+        authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        requestLogin.getEmail(),
+                        requestLogin.getPassword()
+                )
         );
+
+        return AuthResponse
+                .builder()
+                .accessToken(
+                        jwtService.generateToken(
+                                GlobalUser
+                                        .builder()
+                                        .email(requestLogin.getEmail())
+                                        .authorities(authentication.getAuthorities())
+                                        .build()
+                        )
+
+                ).build();
     }
 
-    public void save(RequestRegister requestLogin) {
+
+    public Long save(RequestRegister requestLogin) {
         User user=User
                 .builder()
                 .name(requestLogin.getUsername())
@@ -53,7 +61,7 @@ public class UserService {
                 .role(Role.USER)
                 .authProvider(AuthProvider.LOCAL)
                 .build();
-        System.out.println(user);
-        userRepository.save(user);
+        return userRepository.save(user).getId();
+
     }
 }

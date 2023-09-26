@@ -1,5 +1,7 @@
 package com.example.OAuth2Login.config;
 
+import com.example.OAuth2Login.config.aouth2.OAuth2SuccessHandler;
+import com.example.OAuth2Login.config.aouth2.OAuth2UserService;
 import com.example.OAuth2Login.config.jwt.JwtFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtFilter jwtFilter;
+    private final OAuth2UserService oAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,7 +39,12 @@ public class SecurityConfig {
                         .sessionCreationPolicy(STATELESS)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login();
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(oAuth2UserService)
+                .and()
+                .successHandler(oAuth2SuccessHandler);
+
         return http.build();
     }
 
