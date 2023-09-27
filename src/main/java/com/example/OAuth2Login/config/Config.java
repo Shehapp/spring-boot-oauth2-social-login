@@ -30,6 +30,10 @@ public class Config {
                 if(optionalUser.isPresent()){
                     User user=optionalUser.get();
 
+                    if(!user.getAuthProvider().toString().equalsIgnoreCase("local")){
+                        throw new RuntimeException("you are already signed up with "+user.getAuthProvider().toString()+" account");
+                    }
+
                     return org.springframework.security.core.userdetails.User
                             .withUsername(email)
                             .password(user.getPassword())

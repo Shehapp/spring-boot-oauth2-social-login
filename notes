@@ -1,0 +1,3 @@
+- when user clicks sign in with google, he will redirect to client,
+  client will create AuthorizationRequest cookie and redirect to /oauth2/authorize/google and save this cookie in user's browser
+  after user authorize google, google will redirect to /oauth2/callback/google with code , state and cookie

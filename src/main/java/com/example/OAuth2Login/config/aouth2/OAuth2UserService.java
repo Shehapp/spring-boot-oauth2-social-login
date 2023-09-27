@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +38,11 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         List<SimpleGrantedAuthority> authorities=new ArrayList<>();
 
         if(userOptional.isPresent()){
+
+            if(!userOptional.get().getAuthProvider().toString().equals(userRequest.getClientRegistration().getRegistrationId().toUpperCase())){
+                throw new OAuth2AuthenticationException("you are already signed up with "+userOptional.get().getAuthProvider().toString()+" account");
+            }
+
             updateUser(userOptional.get(),userInfo);
             authorities.add(new SimpleGrantedAuthority(userOptional.get().getRole().toString()));
 
