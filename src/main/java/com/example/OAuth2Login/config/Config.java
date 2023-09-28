@@ -1,5 +1,6 @@
 package com.example.OAuth2Login.config;
 
+import com.example.OAuth2Login.entity.GlobalUser;
 import com.example.OAuth2Login.entity.User;
 import com.example.OAuth2Login.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -8,10 +9,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Configuration
@@ -33,11 +37,12 @@ public class Config {
                     if(!user.getAuthProvider().toString().equalsIgnoreCase("local")){
                         throw new RuntimeException("you are already signed up with "+user.getAuthProvider().toString()+" account");
                     }
-
-                    return org.springframework.security.core.userdetails.User
-                            .withUsername(email)
+                    List<SimpleGrantedAuthority> authorities=new ArrayList<>();
+                    authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+                    return GlobalUser.builder()
+                            .email(user.getEmail())
                             .password(user.getPassword())
-                            .authorities(user.getRole().toString())
+                            .authorities(authorities)
                             .build();
 
                 }else {
